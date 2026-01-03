@@ -1,5 +1,5 @@
 {
-  "name": "key-master",
+  "name": "umbr-key-master",
   "version": "1.0.0",
   "description": "A simple key combination helper",
   "main": "dist/index.js",
@@ -16,7 +16,8 @@
   "author": "Yousaf Wazir",
   "license": "ISC",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "devDependencies": {
     "typescript": "^5.9.3"
