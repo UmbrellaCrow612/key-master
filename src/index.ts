@@ -59,7 +59,7 @@ export class KeyMaster {
   /**
    * Holds a list of current keys being pressed down
    */
-  private readonly _keys = new Set<string>();
+  private readonly _keys = new Set<PressableKey>();
 
   /**
    * Contains all the callbacks to run
@@ -83,7 +83,7 @@ export class KeyMaster {
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {
-    this._keys.add(event.key);
+    this._keys.add(event.key as PressableKey);
 
     const pressed = Array.from(this._keys.values());
     const key = this.makeKey(pressed);
@@ -102,7 +102,7 @@ export class KeyMaster {
   }
 
   private handleKeyUp = (event: KeyboardEvent) => {
-    this._keys.delete(event.key);
+    this._keys.delete(event.key as PressableKey);
   };
 
   add(targetKeys: PressableKey[], callback: KeyCallback): void {
