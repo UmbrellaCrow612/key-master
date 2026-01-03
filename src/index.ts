@@ -20,14 +20,14 @@ import {
 /**
  * Helper used to get custom data to pass to your callback when its conditions are met
  */
-type GetDataCallback = (() => any | Promise<any>) | null;
+export type GetDataCallback = (() => any | Promise<any>) | null;
 
 /**
  * The key value of a keydown can be mapped from W3C UI Events / DOM spec
  *
  * these are what a keydown / keyup `key` value can be and is what you can pass to listen to specific combinations to trigger logic
  */
-type PressableKey =
+export type PressableKey =
   | Alphabet
   | ControlCharacter
   | GlyphModifierKey
@@ -48,7 +48,7 @@ type PressableKey =
 /**
  * Custom callback to run when the specific keys registered are met
  */
-type KeyCallback = (...args: any[]) => any | Promise<any>;
+export type KeyCallback = (...args: any[]) => any | Promise<any>;
 
 /**
  * Represents a key combination manager that holds callbacks to run for specific key combinations
