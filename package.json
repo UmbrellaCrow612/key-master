@@ -2,15 +2,22 @@
   "name": "key-master",
   "version": "0.0.1",
   "description": "A simple key combination helper",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
   "keywords": [
-    "Key"
+    "key",
+    "keyboard",
+    "shortcut",
+    "combination"
   ],
   "author": "Yousaf Wazir",
   "license": "ISC",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "typescript": "^5.9.3"
   }
