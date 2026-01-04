@@ -1,107 +1,113 @@
 # KeyMaster
 
-`KeyMaster` is a TypeScript library for managing complex keyboard shortcuts and key combinations in the browser. It allows you to register callbacks for specific key sequences, supporting all W3C/DOM-standard key types.
+`KeyMaster` is a TypeScript library for managing complex keyboard shortcuts and key combinations in the browser. It allows you to register callbacks for specific key sequences, supporting all W3C/DOM-standard key values.
 
 ---
 
 ## Features
 
-* Listen to single keys or combinations of multiple keys.
-* Supports all standard key types, including:
+* **Multi-Key Support**: Listen to single keys or complex combinations (e.g., `Ctrl + Shift + S`).
+* **Standard Compliant**: Supports all standard key types defined by the W3C UI Events spec:
+* **Alphabet keys** (A-Z)
+* **Control keys** (Enter, Escape, Backspace)
+* **Modifier keys** (Shift, Ctrl, Alt, Meta)
+* **Navigation keys** (Arrow keys, Home, End)
+* **Function keys** (F1-F12)
+* **Multimedia & Device keys**
 
-  * Alphabet keys (A-Z)
-  * Control characters (Enter, Escape, etc.)
-  * Modifier keys (Shift, Ctrl, Alt, Meta)
-  * Navigation keys (Arrow keys, Home, End, etc.)
-  * Function keys (F1-F12)
-  * Multimedia and Audio keys
-  * And more…
-* Optional callback data via a custom function.
-* Easy registration and removal of callbacks.
-* Handles multiple key presses simultaneously.
-* Safe cleanup of event listeners.
+
+* **Contextual Data**: Pass custom data or state to your callbacks automatically.
+* **Memory Safe**: Simple `dispose()` method to clean up event listeners and prevent memory leaks.
 
 ---
 
 ## Installation
 
 ```bash
-npm i umbr-key-master
+npm install umbr-key-master
+
 ```
 
 ---
 
 ## Usage
 
-```ts
-import { KeyMaster } from "umbr-key-master";
-import { Alphabet, ModifierKey } from "umbr-key-master/w3";
+```typescript
+import { KeyMaster, PressableKey } from "umbr-key-master";
 
-// Optional function to provide custom data to callbacks
-const getData = () => ({ user: "Alice" });
-
-// Initialize KeyMaster
-const km = new KeyMaster(getData);
-
-// Register a key combination (Shift + A)
-km.add([ModifierKey.Shift, Alphabet.A], (data) => {
-  console.log("Shift + A pressed!", data);
+// 1. (Optional) Define a function to provide context/data to your callbacks
+const getContext = () => ({ 
+  timestamp: Date.now(),
+  activeEditor: "main-text-area" 
 });
 
-// Register another combination (Ctrl + B)
-km.add([ModifierKey.Control, Alphabet.B], () => {
-  console.log("Ctrl + B pressed!");
+// 2. Initialize KeyMaster
+const km = new KeyMaster(getContext);
+
+// 3. Register a key combination (e.g., Shift + A)
+// Note: Key strings match W3C "key" values
+km.add(["Shift", "a"], (data) => {
+  console.log("Combination triggered!", data);
 });
 
-// Remove a callback
-const callback = (data: any) => console.log("This will be removed", data);
-km.add([Alphabet.C], callback);
-km.remove(callback);
+// 4. Register a single key callback
+km.add(["Enter"], () => {
+  console.log("Enter key was pressed");
+});
 
-// Dispose when done to clean up event listeners
+// 5. Removing a callback
+const myCallback = () => console.log("Temporary shortcut");
+km.add(["Control", "s"], myCallback);
+
+// Later...
+km.remove(myCallback);
+
+// 6. Clean up when the component or page is destroyed
 km.dispose();
+
 ```
 
 ---
 
-## API
+## API Reference
 
-### `constructor(getDataFunc?: () => any | Promise<any>)`
+### `constructor(getDataFunc?: GetDataCallback)`
 
-* `getDataFunc` (optional): Function that returns custom data passed to callbacks.
+Initializes the listener.
 
-### `add(targetKeys: PressableKey[], callback: KeyCallback)`
+* **`getDataFunc`**: (Optional) A sync or async function. The return value of this function is passed as the first argument to every triggered callback.
 
-* Registers a callback for a specific key combination.
-* `targetKeys`: Array of keys to listen for.
-* `callback`: Function to execute when the keys are pressed.
+### `add(targetKeys: PressableKey[], callback: KeyCallback): void`
 
-### `remove(callback: KeyCallback)`
+Registers a callback to a specific combination.
 
-* Removes a previously registered callback.
+* **`targetKeys`**: An array of `PressableKey` strings. The order does not matter as the library sorts them internally.
+* **`callback`**: The function to run when all keys in the array (and *only* those keys) are held down.
 
-### `dispose()`
+### `remove(callback: KeyCallback): void`
 
-* Cleans up all event listeners and callbacks. Call this before destroying KeyMaster.
+Unregisters a specific callback function from all key combinations it was assigned to.
+
+### `dispose(): void`
+
+Removes the `keydown` and `keyup` listeners from the `document` and clears all internal maps. Use this during component unmounting or page transitions.
 
 ---
 
-## Key Types
+## Supported Key Categories
 
-The library supports all keys defined in the W3C UI Events/DOM specification. Examples include:
+The library utilizes the full W3C UI Events key set. Common categories include:
 
-* `Alphabet` → A-Z
-* `ControlCharacter` → Enter, Escape, Backspace, etc.
-* `ModifierKey` → Shift, Control, Alt, Meta
-* `NavigationKey` → ArrowUp, ArrowDown, Home, End
-* `FunctionKey` → F1-F12
-* `MultimediaKey` → VolumeUp, Play, Pause
-* `AudioKey` → Mute, VolumeDown
-* `WhitespaceKey` → Space, Tab
-* And many more…
+| Category | Examples |
+| --- | --- |
+| **Modifiers** | `Shift`, `Control`, `Alt`, `Meta` |
+| **Navigation** | `ArrowUp`, `ArrowDown`, `Home`, `PageUp` |
+| **Editing** | `Backspace`, `Delete`, `Enter`, `Tab` |
+| **UI Control** | `Escape`, `ContextMenu`, `Pause` |
+| **Functions** | `F1` through `F20` |
+
+---
 
 ## License
 
 MIT © Yousaf Wazir
-
-
