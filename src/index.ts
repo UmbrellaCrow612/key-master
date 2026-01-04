@@ -1,4 +1,10 @@
-import { UIEventUnicodeKey, UnicodeControlKey } from "./w3ckeyAttributeValues";
+import {
+  GlyphModifierKey,
+  ModifierKey,
+  SpecialKey,
+  UIEventUnicodeKey,
+  UnicodeControlKey,
+} from "./w3ckeyAttributeValues";
 
 /**
  * Helper used to get custom data to pass to your callback when its conditions are met
@@ -10,7 +16,12 @@ export type GetDataCallback = (() => any | Promise<any>) | null;
  *
  * these are what a keydown / keyup `key` value can be and is what you can pass to listen to specific combinations to trigger logic
  */
-export type PressableKey = UIEventUnicodeKey | UnicodeControlKey;
+export type PressableKey =
+  | UIEventUnicodeKey
+  | UnicodeControlKey
+  | GlyphModifierKey
+  | SpecialKey
+  | ModifierKey;
 
 /**
  * Custom callback to run when the specific keys registered are met

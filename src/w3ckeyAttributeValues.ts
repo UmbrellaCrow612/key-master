@@ -145,3 +145,54 @@ export type UnicodeControlKey =
   | "Escape"
   /** U+007F */
   | "Delete";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 2.2. Selecting key Attribute Values
+ * * A glyph modifier key is any of the following modifier keys:
+ * Shift, CapsLock or AltGr.
+ */
+export type GlyphModifierKey = "Shift" | "CapsLock" | "AltGr";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.1. Special Keys
+ * * This key value is used when an implementation is unable to identify
+ * another key value, due to either hardware, platform, or software constraints.
+ */
+export type SpecialKey = "Unidentified";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.2. Modifier Keys
+ * * Modifier keys enable alternate functions for interpreting keyboard input.
+ */
+export type ModifierKey =
+  /** The Alt (Alternative) key. Used also for the Apple Option key. */
+  | "Alt"
+  /** The Alternate Graphics (AltGr or AltGraph) key. */
+  | "AltGraph"
+  /** The Caps Lock (Capital) key. Toggles capital character lock. */
+  | "CapsLock"
+  /** The Control or Ctrl key. */
+  | "Control"
+  /** The Function switch Fn key. Often handled in hardware. */
+  | "Fn"
+  /** The Function-Lock (FnLock or F-Lock) key. */
+  | "FnLock"
+  /** The Meta key. Used for the Windows Logo key and Apple Command key. */
+  | "Meta"
+  /** The NumLock or Number Lock key. */
+  | "NumLock"
+  /** The Scroll Lock key. */
+  | "ScrollLock"
+  /** The Shift key. */
+  | "Shift"
+  /** The Symbol modifier key (virtual keyboards). */
+  | "Symbol"
+  /** The Symbol Lock key. */
+  | "SymbolLock"
+  /** Legacy: The Hyper key. */
+  | "Hyper"
+  /** Legacy: The Super key. */
+  | "Super";
