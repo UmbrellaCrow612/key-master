@@ -1,21 +1,4 @@
-import {
-  Alphabet,
-  AudioKey,
-  ControlCharacter,
-  DeviceKey,
-  EditingKey,
-  FunctionKey,
-  GlyphModifierKey,
-  IMEKey,
-  ModifierKey,
-  MultimediaKey,
-  MultimediaNumpadKey,
-  NavigationKey,
-  SpecialKey,
-  SpeechKey,
-  UIKey,
-  WhitespaceKey,
-} from "./w3";
+import { UIEventUnicodeKey, UnicodeControlKey } from "./w3ckeyAttributeValues";
 
 /**
  * Helper used to get custom data to pass to your callback when its conditions are met
@@ -27,23 +10,7 @@ export type GetDataCallback = (() => any | Promise<any>) | null;
  *
  * these are what a keydown / keyup `key` value can be and is what you can pass to listen to specific combinations to trigger logic
  */
-export type PressableKey =
-  | Alphabet
-  | ControlCharacter
-  | GlyphModifierKey
-  | SpecialKey
-  | ModifierKey
-  | WhitespaceKey
-  | NavigationKey
-  | EditingKey
-  | UIKey
-  | DeviceKey
-  | IMEKey
-  | FunctionKey
-  | MultimediaKey
-  | MultimediaNumpadKey
-  | AudioKey
-  | SpeechKey;
+export type PressableKey = UIEventUnicodeKey | UnicodeControlKey;
 
 /**
  * Custom callback to run when the specific keys registered are met
