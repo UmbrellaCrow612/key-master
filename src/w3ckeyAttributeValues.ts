@@ -329,3 +329,36 @@ export type DeviceKey =
   | "Standby"
   /** The WakeUp key. (KEYCODE_WAKEUP) */
   | "WakeUp";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.9. General-Purpose Function Keys
+ * * General purpose function keys. Additional function key names are
+ * implicitly defined by incrementing the base-10 index at the end.
+ */
+export type FunctionKey =
+  /** Explicitly defined function keys F1 through F12 */
+  | "F1"
+  | "F2"
+  | "F3"
+  | "F4"
+  | "F5"
+  | "F6"
+  | "F7"
+  | "F8"
+  | "F9"
+  | "F10"
+  | "F11"
+  | "F12"
+  /** * Implicitly defined F-keys (e.g., "F24").
+   * This template literal covers any string starting with F and a number.
+   */
+  | `F${number}`
+  /** Explicitly defined virtual function keys Soft1 through Soft4 */
+  | "Soft1"
+  | "Soft2"
+  | "Soft3"
+  | "Soft4"
+  /** * Implicitly defined Soft-keys (e.g., "Soft8").
+   */
+  | `Soft${number}`;

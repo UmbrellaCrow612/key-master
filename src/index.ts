@@ -1,6 +1,7 @@
 import {
   DeviceKey,
   EditingKey,
+  FunctionKey,
   GlyphModifierKey,
   ModifierKey,
   NavigationKey,
@@ -31,7 +32,8 @@ export type PressableKey =
   | NavigationKey
   | EditingKey
   | UIKey
-  | DeviceKey;
+  | DeviceKey
+  | FunctionKey;
 
 /**
  * Custom callback to run when the specific keys registered are met
