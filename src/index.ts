@@ -13,14 +13,14 @@ import {
 } from "./w3ckeyAttributeValues";
 
 /**
- * Helper used to get custom data to pass to your callback when its conditions are met
+ * A function used to retrieve custom data passed to callbacks when conditions are met.
+ * Supports both synchronous and asynchronous execution.
  */
 export type GetDataCallback = (() => any | Promise<any>) | null;
 
 /**
- * The key value of a keydown can be mapped from W3C UI Events / DOM spec
- *
- * these are what a keydown / keyup `key` value can be and is what you can pass to listen to specific combinations to trigger logic
+ * Union type of valid key values mapped from the W3C UI Events / DOM specification.
+ * These represent the possible values of `KeyboardEvent.key`.
  */
 export type PressableKey =
   | UIEventUnicodeKey
@@ -36,26 +36,27 @@ export type PressableKey =
   | FunctionKey;
 
 /**
- * Custom callback to run when the specific keys registered are met
+ * A callback function executed when registered key combinations are triggered.
  */
 export type KeyCallback = (...args: any[]) => any | Promise<any>;
 
 /**
- * Represents a key combination manager that holds callbacks to run for specific key combinations
+ * Manages keyboard shortcuts and multi-key combinations.
+ * Maps specific key sets to user-defined callbacks.
  */
 export class KeyMaster {
+  /** Function to fetch data passed as the first argument to callbacks. */
   private _getData: GetDataCallback = null;
 
-  /**
-   * Holds a list of current keys being pressed down
-   */
+  /** Tracks currently active keys to handle multi-key combinations. */
   private readonly _keys = new Set<PressableKey>();
 
-  /**
-   * Contains all the callbacks to run
-   */
+  /** Registry mapping stringified key combinations to arrays of callbacks. */
   private readonly _callbacks: Map<string, KeyCallback[]> = new Map();
 
+  /**
+   * @param getDataFunc Optional helper to provide data to callbacks upon execution.
+   */
   constructor(getDataFunc: GetDataCallback = null) {
     this._getData = getDataFunc;
 
@@ -64,9 +65,9 @@ export class KeyMaster {
   }
 
   /**
-   * Creates a key for list of pressable keys
-   * @param keys The list of keys to make an ID for specific callbacks
-   * @returns Key
+   * Normalizes an array of keys into a sorted string ID.
+   * @param keys - The list of keys to normalize.
+   * @returns A consistent string identifier for the key combination.
    */
   private makeKey(keys: string[]): string {
     return keys.sort().join("_");
@@ -84,6 +85,10 @@ export class KeyMaster {
     }
   };
 
+  /**
+   * Executes a list of callbacks, injecting data from _getData if available.
+   * @param callbacks - The list of functions to trigger.
+   */
   private async run(callbacks: KeyCallback[]): Promise<void> {
     const data = this._getData ? await this._getData() : null;
     for (const callback of callbacks) {
@@ -95,6 +100,11 @@ export class KeyMaster {
     this._keys.delete(event.key as PressableKey);
   };
 
+  /**
+   * Registers a callback for a specific combination of keys.
+   * @param targetKeys - Array of keys that must be pressed simultaneously.
+   * @param callback - The function to execute.
+   */
   add(targetKeys: PressableKey[], callback: KeyCallback): void {
     const key = this.makeKey(targetKeys);
 
@@ -105,6 +115,10 @@ export class KeyMaster {
     this._callbacks.get(key)!.push(callback);
   }
 
+  /**
+   * Removes a callback from all registered combinations.
+   * @param callback - The callback function to unregister.
+   */
   remove(callback: KeyCallback): void {
     for (const [key, callbacks] of this._callbacks.entries()) {
       const index = callbacks.indexOf(callback);
@@ -118,7 +132,7 @@ export class KeyMaster {
   }
 
   /**
-   * Call before destroying to clean up event listeners
+   * Cleans up event listeners and clears registered callbacks to prevent memory leaks.
    */
   dispose(): void {
     document.removeEventListener("keydown", this.handleKeyDown);
