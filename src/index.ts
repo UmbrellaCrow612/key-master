@@ -1,10 +1,12 @@
 import {
+  DeviceKey,
   EditingKey,
   GlyphModifierKey,
   ModifierKey,
   NavigationKey,
   SpecialKey,
   UIEventUnicodeKey,
+  UIKey,
   UnicodeControlKey,
   WhitespaceKey,
 } from "./w3ckeyAttributeValues";
@@ -27,7 +29,9 @@ export type PressableKey =
   | ModifierKey
   | WhitespaceKey
   | NavigationKey
-  | EditingKey;
+  | EditingKey
+  | UIKey
+  | DeviceKey;
 
 /**
  * Custom callback to run when the specific keys registered are met

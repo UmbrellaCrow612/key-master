@@ -263,3 +263,69 @@ export type EditingKey =
   | "Redo"
   /** Undo the last action. (APPCOMMAND_UNDO) */
   | "Undo";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.6. UI Keys
+ * * UI keys are used for user interface interactions, such as menus,
+ * dialogs, and application-level commands.
+ */
+export type UIKey =
+  /** The Accept (Commit, OK) key. */
+  | "Accept"
+  /** The Again key, to redo or repeat an action. */
+  | "Again"
+  /** The Attention (Attn) key. */
+  | "Attn"
+  /** The Cancel key. */
+  | "Cancel"
+  /** Show the application’s context menu. */
+  | "ContextMenu"
+  /** The Esc key, used to exit or "escape" the current context. */
+  | "Escape"
+  /** The Execute key. */
+  | "Execute"
+  /** Open the Find dialog. (APPCOMMAND_FIND) */
+  | "Find"
+  /** Open a help dialog. (APPCOMMAND_HELP, KEYCODE_HELP) */
+  | "Help"
+  /** Pause the current state. Not for media; use "MediaPause" instead. */
+  | "Pause"
+  /** Play or resume the current state. Not for media; use "MediaPlay" instead. */
+  | "Play"
+  /** The properties (Props) key. */
+  | "Props"
+  /** The Select key. */
+  | "Select"
+  /** The ZoomIn key. (KEYCODE_ZOOM_IN) */
+  | "ZoomIn"
+  /** The ZoomOut key. (KEYCODE_ZOOM_OUT) */
+  | "ZoomOut";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.7. Device Keys
+ * * Device keys represent physical hardware controls, such as screen
+ * brightness and power management.
+ */
+export type DeviceKey =
+  /** The Brightness Down key. (KEYCODE_BRIGHTNESS_DOWN) */
+  | "BrightnessDown"
+  /** The Brightness Up key. (KEYCODE_BRIGHTNESS_UP) */
+  | "BrightnessUp"
+  /** Toggle removable media to eject or insert. (KEYCODE_MEDIA_EJECT) */
+  | "Eject"
+  /** The LogOff key. */
+  | "LogOff"
+  /** Toggle power state. Note: May not be exposed to the OS. (KEYCODE_POWER) */
+  | "Power"
+  /** The PowerOff key. Sometimes called PowerDown. */
+  | "PowerOff"
+  /** The Print Screen or SnapShot key. */
+  | "PrintScreen"
+  /** The Hibernate key. Saves state to disk and shuts down. */
+  | "Hibernate"
+  /** The Standby key. Low-power mode; sometimes labeled Suspend or Sleep. (KEYCODE_SLEEP) */
+  | "Standby"
+  /** The WakeUp key. (KEYCODE_WAKEUP) */
+  | "WakeUp";
