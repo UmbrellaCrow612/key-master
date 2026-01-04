@@ -111,3 +111,10 @@ The library utilizes the full W3C UI Events key set. Common categories include:
 ## License
 
 MIT © Yousaf Wazir
+
+
+# Building 
+
+- Change version up - push git change
+- Run `npm run build`
+- Run `npm run pubish`
