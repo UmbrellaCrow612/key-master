@@ -4,6 +4,10 @@
   "description": "A lightweight, type-safe TypeScript library for managing complex keyboard shortcuts and multi-key combinations in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UmbrellaCrow612/key-master.git"
+  },
   "scripts": {
     "build": "tsc"
   },
@@ -21,6 +25,10 @@
   ],
   "author": "Yousaf Wazir",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UmbrellaCrow612/key-master/issues"
+  },
+  "homepage": "https://github.com/UmbrellaCrow612/key-master#readme",
   "files": [
     "dist",
     "README.md"
