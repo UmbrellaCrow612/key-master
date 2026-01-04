@@ -232,3 +232,34 @@ export type NavigationKey =
   | "PageDown"
   /** The Page Up key. */
   | "PageUp";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.5. Editing Keys
+ * * Editing keys are used for manipulating text or content.
+ */
+export type EditingKey =
+  /** The Backspace key. Also used for the 'Delete' label on MacOS. */
+  | "Backspace"
+  /** Remove the currently selected input. */
+  | "Clear"
+  /** Copy the current selection. (APPCOMMAND_COPY) */
+  | "Copy"
+  /** The Cursor Select (Crsel) key. */
+  | "CrSel"
+  /** Cut the current selection. (APPCOMMAND_CUT) */
+  | "Cut"
+  /** The Delete (Del) Key. Also used for MacOS 'Delete' + 'Fn'. */
+  | "Delete"
+  /** The Erase to End of Field key. */
+  | "EraseEof"
+  /** The Extend Selection (Exsel) key. */
+  | "ExSel"
+  /** The Insert (Ins) key. (KEYCODE_INSERT) */
+  | "Insert"
+  /** The Paste key. (APPCOMMAND_PASTE) */
+  | "Paste"
+  /** Redo the last action. (APPCOMMAND_REDO) */
+  | "Redo"
+  /** Undo the last action. (APPCOMMAND_UNDO) */
+  | "Undo";

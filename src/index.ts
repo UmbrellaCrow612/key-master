@@ -1,4 +1,5 @@
 import {
+  EditingKey,
   GlyphModifierKey,
   ModifierKey,
   NavigationKey,
@@ -25,7 +26,8 @@ export type PressableKey =
   | SpecialKey
   | ModifierKey
   | WhitespaceKey
-  | NavigationKey;
+  | NavigationKey
+  | EditingKey;
 
 /**
  * Custom callback to run when the specific keys registered are met
