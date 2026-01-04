@@ -1,9 +1,11 @@
 import {
   GlyphModifierKey,
   ModifierKey,
+  NavigationKey,
   SpecialKey,
   UIEventUnicodeKey,
   UnicodeControlKey,
+  WhitespaceKey,
 } from "./w3ckeyAttributeValues";
 
 /**
@@ -21,7 +23,9 @@ export type PressableKey =
   | UnicodeControlKey
   | GlyphModifierKey
   | SpecialKey
-  | ModifierKey;
+  | ModifierKey
+  | WhitespaceKey
+  | NavigationKey;
 
 /**
  * Custom callback to run when the specific keys registered are met

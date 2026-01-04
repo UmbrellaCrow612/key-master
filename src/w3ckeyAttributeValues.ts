@@ -196,3 +196,39 @@ export type ModifierKey =
   | "Hyper"
   /** Legacy: The Super key. */
   | "Super";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.3. Whitespace Keys
+ * * This section defines keys that represent whitespace-related actions.
+ */
+export type WhitespaceKey =
+  /** * The Enter or ↵ key. Used for Return (Macintosh) and
+   * Android KEYCODE_DPAD_CENTER.
+   */
+  | "Enter"
+  /** The Horizontal Tabulation Tab key. */
+  | "Tab";
+
+/**
+ * @see {@link https://www.w3.org/TR/uievents-key/#keys-unicode}
+ * 3.4. Navigation Keys
+ * * Navigation keys are used for moving the cursor or scrolling the viewport.
+ */
+export type NavigationKey =
+  /** The down arrow key. (KEYCODE_DPAD_DOWN) */
+  | "ArrowDown"
+  /** The left arrow key. (KEYCODE_DPAD_LEFT) */
+  | "ArrowLeft"
+  /** The right arrow key. (KEYCODE_DPAD_RIGHT) */
+  | "ArrowRight"
+  /** The up arrow key. (KEYCODE_DPAD_UP) */
+  | "ArrowUp"
+  /** The End key. (KEYCODE_MOVE_END) */
+  | "End"
+  /** The Home key. (KEYCODE_MOVE_HOME) */
+  | "Home"
+  /** The Page Down key. */
+  | "PageDown"
+  /** The Page Up key. */
+  | "PageUp";
