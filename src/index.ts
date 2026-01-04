@@ -1,35 +1,39 @@
 import {
-  Alphabet,
-  AudioKey,
-  ControlCharacter,
   DeviceKey,
   EditingKey,
   FunctionKey,
   GlyphModifierKey,
-  IMEKey,
   ModifierKey,
-  MultimediaKey,
-  MultimediaNumpadKey,
   NavigationKey,
   SpecialKey,
-  SpeechKey,
+  UIEventUnicodeKey,
   UIKey,
+  UnicodeControlKey,
   WhitespaceKey,
-} from "./w3";
+} from "./w3ckeyAttributeValues";
 
 /**
- * Helper used to get custom data to pass to your callback when its conditions are met
+ * Additional options for the KeyMaster instance.
+ */
+export type KeyMasterOptions = {
+  /**
+   * If true, key comparisons will ignore casing (e.g., 'A' and 'a' are treated as the same key).
+   * @default false
+   */
+  caseInsensitive?: boolean;
+};
+
+/**
+ * A function used to retrieve custom data passed to callbacks when conditions are met.
  */
 export type GetDataCallback = (() => any | Promise<any>) | null;
 
 /**
- * The key value of a keydown can be mapped from W3C UI Events / DOM spec
- *
- * these are what a keydown / keyup `key` value can be and is what you can pass to listen to specific combinations to trigger logic
+ * Union type of valid key values mapped from the W3C UI Events / DOM specification.
  */
 export type PressableKey =
-  | Alphabet
-  | ControlCharacter
+  | UIEventUnicodeKey
+  | UnicodeControlKey
   | GlyphModifierKey
   | SpecialKey
   | ModifierKey
@@ -38,62 +42,80 @@ export type PressableKey =
   | EditingKey
   | UIKey
   | DeviceKey
-  | IMEKey
-  | FunctionKey
-  | MultimediaKey
-  | MultimediaNumpadKey
-  | AudioKey
-  | SpeechKey;
+  | FunctionKey;
 
 /**
- * Custom callback to run when the specific keys registered are met
+ * A callback function executed when registered key combinations are triggered.
  */
-export type KeyCallback = (...args: any[]) => any | Promise<any>;
+export type KeyCallback = (data: any) => any | Promise<any>;
 
 /**
- * Represents a key combination manager that holds callbacks to run for specific key combinations
+ * Manages keyboard shortcuts and multi-key combinations.
+ * Supports case-insensitive matching and contextual data injection.
  */
 export class KeyMaster {
   private _getData: GetDataCallback = null;
-
-  /**
-   * Holds a list of current keys being pressed down
-   */
-  private readonly _keys = new Set<PressableKey>();
-
-  /**
-   * Contains all the callbacks to run
-   */
+  private readonly _keys = new Set<string>();
   private readonly _callbacks: Map<string, KeyCallback[]> = new Map();
+  private _options: Required<KeyMasterOptions>;
 
-  constructor(getDataFunc: GetDataCallback = null) {
+  /**
+   * @param getDataFunc - Optional helper to provide data to callbacks.
+   * @param options - Configuration options for key handling.
+   */
+  constructor(
+    getDataFunc: GetDataCallback = null,
+    options: KeyMasterOptions = {}
+  ) {
     this._getData = getDataFunc;
+    this._options = {
+      caseInsensitive: false,
+      ...options,
+    };
 
     document.addEventListener("keydown", this.handleKeyDown);
     document.addEventListener("keyup", this.handleKeyUp);
   }
 
   /**
-   * Creates a key for list of pressable keys
-   * @param keys The list of keys to make an ID for specific callbacks
-   * @returns Key
+   * Normalizes an array of keys into a sorted string ID.
+   * Handles case normalization if caseInsensitive is enabled.
    */
   private makeKey(keys: string[]): string {
-    return keys.sort().join("_");
+    const normalizedKeys = this._options.caseInsensitive
+      ? keys.map((k) => k.toLowerCase())
+      : keys;
+
+    return normalizedKeys.sort().join("_");
   }
 
   private handleKeyDown = (event: KeyboardEvent) => {
-    this._keys.add(event.key as PressableKey);
+    const keyToStore = this._options.caseInsensitive
+      ? event.key.toLowerCase()
+      : event.key;
+
+    this._keys.add(keyToStore);
 
     const pressed = Array.from(this._keys.values());
-    const key = this.makeKey(pressed);
+    const comboId = this.makeKey(pressed);
 
-    const callbacks = this._callbacks.get(key);
+    const callbacks = this._callbacks.get(comboId);
     if (callbacks) {
       this.run(callbacks);
     }
   };
 
+  private handleKeyUp = (event: KeyboardEvent) => {
+    const keyToRemove = this._options.caseInsensitive
+      ? event.key.toLowerCase()
+      : event.key;
+
+    this._keys.delete(keyToRemove);
+  };
+
+  /**
+   * Executes a list of callbacks with injected data.
+   */
   private async run(callbacks: KeyCallback[]): Promise<void> {
     const data = this._getData ? await this._getData() : null;
     for (const callback of callbacks) {
@@ -101,34 +123,38 @@ export class KeyMaster {
     }
   }
 
-  private handleKeyUp = (event: KeyboardEvent) => {
-    this._keys.delete(event.key as PressableKey);
-  };
-
+  /**
+   * Registers a callback for a specific combination of keys.
+   * @param targetKeys - Array of keys (e.g., ["Control", "S"]).
+   * @param callback - Function to trigger.
+   */
   add(targetKeys: PressableKey[], callback: KeyCallback): void {
-    const key = this.makeKey(targetKeys);
+    const comboId = this.makeKey(targetKeys as string[]);
 
-    if (!this._callbacks.has(key)) {
-      this._callbacks.set(key, []);
+    if (!this._callbacks.has(comboId)) {
+      this._callbacks.set(comboId, []);
     }
 
-    this._callbacks.get(key)!.push(callback);
+    this._callbacks.get(comboId)!.push(callback);
   }
 
+  /**
+   * Removes a callback from all registered combinations.
+   */
   remove(callback: KeyCallback): void {
-    for (const [key, callbacks] of this._callbacks.entries()) {
+    for (const [comboId, callbacks] of this._callbacks.entries()) {
       const index = callbacks.indexOf(callback);
       if (index !== -1) {
         callbacks.splice(index, 1);
         if (callbacks.length === 0) {
-          this._callbacks.delete(key);
+          this._callbacks.delete(comboId);
         }
       }
     }
   }
 
   /**
-   * Call before destroying to clean up event listeners
+   * Cleans up event listeners and internal state.
    */
   dispose(): void {
     document.removeEventListener("keydown", this.handleKeyDown);
