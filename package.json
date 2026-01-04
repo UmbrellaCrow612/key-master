@@ -1,7 +1,7 @@
 {
   "name": "umbr-key-master",
-  "version": "1.0.3",
-  "description": "JS library for managing complex keyboard shortcuts and key combinations in the browser",
+  "version": "1.0.4",
+  "description": "A lightweight, type-safe TypeScript library for managing complex keyboard shortcuts and multi-key combinations in the browser.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,7 +11,13 @@
     "key",
     "keyboard",
     "shortcut",
-    "combination"
+    "hotkeys",
+    "key-combinations",
+    "typescript",
+    "dom-events",
+    "w3c-keys",
+    "event-listener",
+    "keyboard-manager"
   ],
   "author": "Yousaf Wazir",
   "license": "ISC",
