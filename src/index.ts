@@ -75,6 +75,8 @@ export class KeyMaster {
 
     document.addEventListener("keydown", this.handleKeyDown);
     document.addEventListener("keyup", this.handleKeyUp);
+    window.addEventListener("blur", this.handleBlur);
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
   }
 
   /**
@@ -111,6 +113,24 @@ export class KeyMaster {
       : event.key;
 
     this._keys.delete(keyToRemove);
+  };
+
+  /**
+   * Clears all pressed keys when window loses focus.
+   * This prevents keys from getting "stuck" when DevTools or other windows are opened.
+   */
+  private handleBlur = () => {
+    this._keys.clear();
+  };
+
+  /**
+   * Clears all pressed keys when document becomes hidden.
+   * This handles cases where the page loses visibility.
+   */
+  private handleVisibilityChange = () => {
+    if (document.hidden) {
+      this._keys.clear();
+    }
   };
 
   /**
@@ -159,6 +179,11 @@ export class KeyMaster {
   dispose(): void {
     document.removeEventListener("keydown", this.handleKeyDown);
     document.removeEventListener("keyup", this.handleKeyUp);
+    window.removeEventListener("blur", this.handleBlur);
+    document.removeEventListener(
+      "visibilitychange",
+      this.handleVisibilityChange
+    );
     this._callbacks.clear();
     this._keys.clear();
   }
